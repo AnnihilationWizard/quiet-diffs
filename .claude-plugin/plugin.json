@@ -1,0 +1,7 @@
+{
+  "name": "quiet-diffs",
+  "version": "0.1.0",
+  "description": "Replace file-edit diffs in the transcript with a one-line summary",
+  "author": { "name": "annihilation.wizard" },
+  "types": "./types/index.d.ts"
+}
