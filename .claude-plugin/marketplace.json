@@ -1,6 +1,9 @@
 {
   "name": "quiet-diffs",
   "description": "A Claude Code mod that shows file edits as one-line summaries instead of full diffs",
-  "owner": { "name": "annihilation.wizard" },
+  "owner": {
+    "name": "AnnihilationWizard",
+    "url": "https://github.com/AnnihilationWizard"
+  },
   "plugins": [{ "name": "quiet-diffs", "source": "./" }]
 }

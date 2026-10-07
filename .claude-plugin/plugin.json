@@ -1,7 +1,14 @@
 {
   "name": "quiet-diffs",
-  "version": "0.1.0",
-  "description": "Replace file-edit diffs in the transcript with a one-line summary",
-  "author": { "name": "annihilation.wizard" },
+  "version": "1.0.0",
+  "description": "Show Claude Code file edits as one-line summaries instead of full diffs",
+  "author": {
+    "name": "AnnihilationWizard",
+    "url": "https://github.com/AnnihilationWizard"
+  },
+  "homepage": "https://github.com/AnnihilationWizard/quiet-diffs",
+  "repository": "https://github.com/AnnihilationWizard/quiet-diffs",
+  "license": "MIT",
+  "keywords": ["claude-code", "mod", "diff", "transcript"],
   "types": "./types/index.d.ts"
 }

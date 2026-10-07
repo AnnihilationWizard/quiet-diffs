@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">quiet-diffs before and after</title>
+  <desc id="desc">Left: a Claude Code transcript where an Edit shows a full red and green diff. Right: the same transcript with quiet-diffs, where the Edit shows one dim summary line.</desc>
+  <style>
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 14px; }
+    .label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; }
+    .fg { fill: #e6edf3; }
+    .dim { fill: #8b949e; }
+    .tool { fill: #e6edf3; font-weight: 700; }
+    .dot { fill: #3fb950; }
+    .add { fill: #aff5b4; }
+    .del { fill: #ffdcd7; }
+  </style>
+  <rect width="960" height="420" rx="14" fill="#0d1117"/>
+  <rect x="0.5" y="0.5" width="959" height="419" rx="14" fill="none" stroke="#30363d"/>
+  <circle cx="24" cy="22" r="6" fill="#ff5f57"/>
+  <circle cx="44" cy="22" r="6" fill="#febc2e"/>
+  <circle cx="64" cy="22" r="6" fill="#28c840"/>
+  <line x1="480" y1="44" x2="480" y2="396" stroke="#30363d"/>
+
+  <!-- Before -->
+  <text x="32" y="70" class="label" fill="#f85149">BEFORE</text>
+  <g class="mono">
+    <text x="32" y="106"><tspan class="dot">⏺</tspan><tspan class="tool" dx="8">Update</tspan><tspan class="fg">(src/app.ts)</tspan></text>
+    <text x="48" y="132" class="dim">⎿  Added 2 lines, removed 1 line</text>
+    <rect x="64" y="146" width="392" height="22" fill="#3d1214"/>
+    <text x="72" y="162" class="del">12 - const limit = 10</text>
+    <rect x="64" y="170" width="392" height="22" fill="#12361f"/>
+    <text x="72" y="186" class="add">12 + const limit = readLimit()</text>
+    <rect x="64" y="194" width="392" height="22" fill="#12361f"/>
+    <text x="72" y="210" class="add">13 + if (limit &lt;= 0) throw new Error()</text>
+    <text x="72" y="234" class="dim">14   return fetchPage(limit)</text>
+    <text x="32" y="276"><tspan class="dot">⏺</tspan><tspan class="tool" dx="8">Write</tspan><tspan class="fg">(docs/notes.md)</tspan></text>
+    <text x="48" y="302" class="dim">⎿  Wrote 40 lines to docs/notes.md</text>
+    <text x="72" y="326" class="dim">1  # Notes</text>
+    <text x="72" y="348" class="dim">2  </text>
+    <text x="72" y="370" class="dim">3  Limits are read from config …</text>
+  </g>
+
+  <!-- After -->
+  <text x="512" y="70" class="label" fill="#3fb950">WITH QUIET-DIFFS</text>
+  <g class="mono">
+    <text x="512" y="106"><tspan class="dot">⏺</tspan><tspan class="tool" dx="8">Update</tspan><tspan class="fg">(src/app.ts)</tspan></text>
+    <text x="528" y="132" class="dim">已修改 src/app.ts（+2 −1）</text>
+    <text x="512" y="176"><tspan class="dot">⏺</tspan><tspan class="tool" dx="8">Write</tspan><tspan class="fg">(docs/notes.md)</tspan></text>
+    <text x="528" y="202" class="dim">已建立 docs/notes.md（40 行）</text>
+    <text x="512" y="246"><tspan class="dot">⏺</tspan><tspan class="fg" dx="8">Ran 2 shell commands</tspan></text>
+    <text x="512" y="290" class="fg">Done. Limits read from config.</text>
+  </g>
+  <text x="512" y="370" class="label dim" style="font-weight:500;letter-spacing:0">/quiet-diffs brings the full diff back</text>
+</svg>
