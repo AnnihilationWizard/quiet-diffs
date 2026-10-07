@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Version-1.0.0-green.svg" alt="Version 1.0.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Version-1.1.0-green.svg" alt="Version 1.1.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
   <a href="https://code.claude.com/docs"><img src="https://img.shields.io/badge/Claude%20Code-2.1.292%2B-D97757.svg" alt="Claude Code 2.1.292+"></a>
   <a href="hooks/register.tsx"><img src="https://img.shields.io/badge/Type-Function%20hooks%20mod-6E7681.svg" alt="Function hooks mod"></a>
@@ -24,7 +24,7 @@
 
 ![Side-by-side Claude Code transcript: on the left an edit shows a full red and green diff, on the right the same edit shows one dim summary line](docs/images/preview.svg)
 
-*Illustration of the transcript before and after. Summary text is in Traditional Chinese.*
+*Illustration of the transcript before and after.*
 
 When Claude Code edits files, each `Edit` or `Write` step prints the whole diff into the transcript. Over a long task, those diffs push the steps and Claude's explanations off the screen. quiet-diffs keeps every step visible and turns each diff into a single line with the file path and its added and removed line counts. The change only affects what the transcript draws: the stored tool result, and what Claude reads, stay the same.
 
@@ -41,10 +41,10 @@ When Claude Code edits files, each `Edit` or `Write` step prints the whole diff 
 
 | Tool | Shown instead of the diff |
 | --- | --- |
-| `Edit` | `已修改 src/app.ts（+2 −1）` |
-| `Write`, new file | `已建立 docs/notes.md（40 行）` |
-| `Write`, overwrite | `已覆寫 config.json（+5 −2）` |
-| `NotebookEdit` | `已修改 analysis.ipynb（cell abc123，replace）` |
+| `Edit` | `Edited src/app.ts (+2 −1)` |
+| `Write`, new file | `Created docs/notes.md (40 lines)` |
+| `Write`, overwrite | `Overwrote config.json (+5 −2)` |
+| `NotebookEdit` | `Edited analysis.ipynb (cell abc123, replace)` |
 
 ## Install
 

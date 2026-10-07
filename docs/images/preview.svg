@@ -41,9 +41,9 @@
   <text x="512" y="70" class="label" fill="#3fb950">WITH QUIET-DIFFS</text>
   <g class="mono">
     <text x="512" y="106"><tspan class="dot">⏺</tspan><tspan class="tool" dx="8">Update</tspan><tspan class="fg">(src/app.ts)</tspan></text>
-    <text x="528" y="132" class="dim">已修改 src/app.ts（+2 −1）</text>
+    <text x="528" y="132" class="dim">Edited src/app.ts (+2 −1)</text>
     <text x="512" y="176"><tspan class="dot">⏺</tspan><tspan class="tool" dx="8">Write</tspan><tspan class="fg">(docs/notes.md)</tspan></text>
-    <text x="528" y="202" class="dim">已建立 docs/notes.md（40 行）</text>
+    <text x="528" y="202" class="dim">Created docs/notes.md (40 lines)</text>
     <text x="512" y="246"><tspan class="dot">⏺</tspan><tspan class="fg" dx="8">Ran 2 shell commands</tspan></text>
     <text x="512" y="290" class="fg">Done. Limits read from config.</text>
   </g>

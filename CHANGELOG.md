@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0] - 2026-10-07
+
+- Summary lines are now in English: `Edited`, `Created` and `Overwrote`, with `line` or `lines` for new files.
+- `/quiet-diffs` description and confirmation messages are now in English.
+- README illustration and examples updated to match.
+
 ## [1.0.0] - 2026-10-07
 
 Initial release of quiet-diffs by AnnihilationWizard.
@@ -14,4 +20,5 @@ Initial release of quiet-diffs by AnnihilationWizard.
 
 Built on Claude Code's early-access function-hooks mod API and tested against Claude Code 2.1.292.
 
+[1.1.0]: https://github.com/AnnihilationWizard/quiet-diffs/releases/tag/v1.1.0
 [1.0.0]: https://github.com/AnnihilationWizard/quiet-diffs/releases/tag/v1.0.0

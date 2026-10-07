@@ -27,20 +27,20 @@ const summarize = (tool: string, output: unknown): string | undefined => {
 
   if (tool === 'Edit' && typeof o.filePath === 'string' && Array.isArray(o.structuredPatch)) {
     const { added, removed } = countLines(o.structuredPatch as Hunk[])
-    return `已修改 ${o.filePath}（+${added} −${removed}）`
+    return `Edited ${o.filePath} (+${added} −${removed})`
   }
   if (tool === 'Write' && typeof o.filePath === 'string') {
     if (o.type === 'create') {
       const text = typeof o.content === 'string' ? o.content.replace(/\n$/, '') : ''
       const lines = text === '' ? 0 : text.split('\n').length
-      return `已建立 ${o.filePath}（${lines} 行）`
+      return `Created ${o.filePath} (${lines} ${lines === 1 ? 'line' : 'lines'})`
     }
     const hunks = Array.isArray(o.structuredPatch) ? (o.structuredPatch as Hunk[]) : []
     const { added, removed } = countLines(hunks)
-    return `已覆寫 ${o.filePath}（+${added} −${removed}）`
+    return `Overwrote ${o.filePath} (+${added} −${removed})`
   }
   if (tool === 'NotebookEdit' && typeof o.notebook_path === 'string' && !o.error) {
-    return `已修改 ${o.notebook_path}（cell ${String(o.cell_id ?? '?')}，${String(o.edit_mode)}）`
+    return `Edited ${o.notebook_path} (cell ${String(o.cell_id ?? '?')}, ${String(o.edit_mode)})`
   }
 
   return undefined
@@ -50,7 +50,7 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'quiet-diffs',
-      description: '切換檔案修改時是否顯示完整 diff',
+      description: 'Toggle between full diffs and one-line summaries for file edits',
     })
 
     return next(e)
@@ -59,7 +59,7 @@ export const register: Register = on => {
   on('command.run', { command: 'quiet-diffs' }, async $ => {
     const shown = await update($, showDiffs, v => !v)
 
-    return { text: shown ? '已顯示完整 diff' : '已改為一行摘要' }
+    return { text: shown ? 'Showing full diffs' : 'Showing one-line summaries' }
   })
 
   on('ui.render', { component: 'ToolResult' }, async ($, e, next) => {

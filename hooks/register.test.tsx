@@ -60,7 +60,7 @@ test('Edit diff is drawn as a one-line summary', async ($, on) => {
   engineDraws(on)
   for (const surface of SURFACES) {
     const ui = await mountResult($, surface, 'Edit', EDIT)
-    expect(await shownText(ui)).toBe('已修改 /repo/src/app.ts（+2 −1）')
+    expect(await shownText(ui)).toBe('Edited /repo/src/app.ts (+2 −1)')
     await ui.unmount()
   }
 })
@@ -69,12 +69,16 @@ test('a new file from Write shows its line count', async ($, on) => {
   engineDraws(on)
   for (const surface of SURFACES) {
     const ui = await mountResult($, surface, 'Write', WRITE_NEW)
-    expect(await shownText(ui)).toBe('已建立 /repo/new.md（3 行）')
+    expect(await shownText(ui)).toBe('Created /repo/new.md (3 lines)')
     await ui.unmount()
 
     const trailing = await mountResult($, surface, 'Write', { ...WRITE_NEW, content: 'one\ntwo\nthree\n' })
-    expect(await shownText(trailing)).toBe('已建立 /repo/new.md（3 行）')
+    expect(await shownText(trailing)).toBe('Created /repo/new.md (3 lines)')
     await trailing.unmount()
+
+    const single = await mountResult($, surface, 'Write', { ...WRITE_NEW, content: 'only\n' })
+    expect(await shownText(single)).toBe('Created /repo/new.md (1 line)')
+    await single.unmount()
   }
 })
 
@@ -94,16 +98,16 @@ test('other tools and errored edits keep the engine drawing', async ($, on) => {
 test('/quiet-diffs toggles the full diff back on and off', async ($, on) => {
   engineDraws(on)
   const shown = await $.command.run(TOGGLE)
-  expect(shown).toEqual(expect.objectContaining({ text: '已顯示完整 diff' }))
+  expect(shown).toEqual(expect.objectContaining({ text: 'Showing full diffs' }))
 
   const full = await mountResult($, 'terminal', 'Edit', EDIT)
   expect(await shownText(full)).toBe('ENGINE')
   await full.unmount()
 
   const hidden = await $.command.run(TOGGLE)
-  expect(hidden).toEqual(expect.objectContaining({ text: '已改為一行摘要' }))
+  expect(hidden).toEqual(expect.objectContaining({ text: 'Showing one-line summaries' }))
 
   const quiet = await mountResult($, 'terminal', 'Edit', EDIT)
-  expect(await shownText(quiet)).toBe('已修改 /repo/src/app.ts（+2 −1）')
+  expect(await shownText(quiet)).toBe('Edited /repo/src/app.ts (+2 −1)')
   await quiet.unmount()
 })
