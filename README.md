@@ -29,7 +29,7 @@
 When Claude Code edits files, each `Edit` or `Write` step, and each shell command that changes files, prints the whole diff into the transcript. Over a long task, those diffs push the steps and Claude's explanations off the screen. quiet-diffs keeps every step visible and turns each diff into a single line with the file path and its added and removed line counts. The change only affects what the transcript draws: the stored tool result, and what Claude reads, stay the same.
 
 > [!NOTE]
-> quiet-diffs is built on Claude Code's function-hooks mod API, which is in early access and may change between releases. It was built and tested against Claude Code **2.1.292** and **2.1.296**.
+> quiet-diffs is built on Claude Code's function-hooks mod API, which is in early access and may change between releases.
 
 ## Features
 
