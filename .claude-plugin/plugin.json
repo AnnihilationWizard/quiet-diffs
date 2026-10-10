@@ -1,6 +1,6 @@
 {
   "name": "quiet-diffs",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Show Claude Code file edits as one-line summaries instead of full diffs",
   "author": {
     "name": "AnnihilationWizard",

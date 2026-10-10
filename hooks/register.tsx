@@ -46,6 +46,28 @@ const summarize = (tool: string, output: unknown): string | undefined => {
   return undefined
 }
 
+type BashFile = { filePath: string; hunks: Hunk[]; created?: true; deleted?: true }
+
+// Splits a Bash result into the output without its file-edit diff and one
+// line per changed file. Undefined when the command changed no files.
+const splitBashEdits = (output: unknown) => {
+  if (typeof output !== 'object' || output === null) return undefined
+  const { bashEditDiff, ...rest } = output as Record<string, unknown>
+  if (typeof bashEditDiff !== 'object' || bashEditDiff === null) return undefined
+  const diff = bashEditDiff as { files?: unknown; moreFiles?: unknown }
+  if (!Array.isArray(diff.files) || diff.files.length === 0) return undefined
+
+  const lines = (diff.files as BashFile[]).map(file => {
+    const { added, removed } = countLines(file.hunks ?? [])
+    const verb = file.created ? 'Created' : file.deleted ? 'Deleted' : 'Edited'
+    return `${verb} ${file.filePath} (+${added} −${removed})`
+  })
+  const more = typeof diff.moreFiles === 'number' ? diff.moreFiles : 0
+  if (more > 0) lines.push(`and ${more} more ${more === 1 ? 'file' : 'files'}`)
+
+  return { output: rest, lines }
+}
+
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
@@ -64,10 +86,25 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'ToolResult' }, async ($, e, next) => {
     if (e.props.isErrored || (await read($, showDiffs))) return next(e)
+    const { Box, Text } = $.ui.resolve(e)
+
+    if (e.props.tool === 'Bash') {
+      const split = splitBashEdits(e.props.output)
+      if (split === undefined) return next(e)
+      const drawn = await next({ ...e, props: { ...e.props, output: split.output } })
+
+      return (
+        <Box flexDirection="column">
+          {drawn}
+          {split.lines.map(line => (
+            <Text dimColor>{line}</Text>
+          ))}
+        </Box>
+      )
+    }
+
     const line = summarize(e.props.tool, e.props.output)
     if (line === undefined) return next(e)
-
-    const { Text } = $.ui.resolve(e)
 
     return <Text dimColor>{line}</Text>
   })

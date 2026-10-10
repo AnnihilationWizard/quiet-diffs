@@ -22,6 +22,23 @@ const WRITE_NEW = {
   originalFile: null,
 }
 
+const BASH_EDITS = {
+  stdout: 'done',
+  stderr: '',
+  interrupted: false,
+  bashEditDiff: {
+    files: [
+      {
+        filePath: '/repo/notes.txt',
+        hunks: [{ oldStart: 1, oldLines: 2, newStart: 1, newLines: 3, lines: [' a', '-b', '+b2', '+c'] }],
+      },
+      { filePath: '/repo/new.txt', created: true, hunks: [{ oldStart: 0, oldLines: 0, newStart: 1, newLines: 1, lines: ['+x'] }] },
+      { filePath: '/repo/old.txt', deleted: true, hunks: [{ oldStart: 1, oldLines: 2, newStart: 0, newLines: 0, lines: ['-y', '-z'] }] },
+    ],
+    moreFiles: 2,
+  },
+}
+
 const SURFACES = ['terminal', 'desktop'] as const
 
 const TOGGLE = {
@@ -31,11 +48,13 @@ const TOGGLE = {
   presentation: { isFullscreen: true, columns: 120 },
 } as const
 
-// Stands for the engine's own result renderer beneath the plugin.
+// Stands for the engine's own result renderer beneath the plugin: it says
+// whether it was handed a Bash edit diff to draw.
 const engineDraws = (on: On) => {
   on('ui.render', { component: 'ToolResult' }, ($, e) => {
     const { Text } = $.ui.resolve(e)
-    return <Text>ENGINE</Text>
+    const output = e.props.output as { bashEditDiff?: unknown } | undefined
+    return <Text>{output?.bashEditDiff === undefined ? 'ENGINE' : 'ENGINE+DIFF'}</Text>
   })
 }
 
@@ -55,6 +74,9 @@ const mountResult = (
 
 const shownText = async (ui: Awaited<ReturnType<typeof mountResult>>) =>
   (await ui.find({ type: 'Text' }))?.text
+
+const shownTexts = async (ui: Awaited<ReturnType<typeof mountResult>>) =>
+  (await ui.findAll({ type: 'Text' })).map(found => found.text)
 
 test('Edit diff is drawn as a one-line summary', async ($, on) => {
   engineDraws(on)
@@ -110,4 +132,35 @@ test('/quiet-diffs toggles the full diff back on and off', async ($, on) => {
   const quiet = await mountResult($, 'terminal', 'Edit', EDIT)
   expect(await shownText(quiet)).toBe('Edited /repo/src/app.ts (+2 −1)')
   await quiet.unmount()
+})
+
+test('Bash file edits keep the command output and drop the diff', async ($, on) => {
+  engineDraws(on)
+  for (const surface of SURFACES) {
+    const ui = await mountResult($, surface, 'Bash', BASH_EDITS)
+    expect(await shownTexts(ui)).toEqual([
+      'ENGINE',
+      'Edited /repo/notes.txt (+2 −1)',
+      'Created /repo/new.txt (+1 −0)',
+      'Deleted /repo/old.txt (+0 −2)',
+      'and 2 more files',
+    ])
+    await ui.unmount()
+  }
+})
+
+test('Bash results without file edits, and /quiet-diffs, keep the full drawing', async ($, on) => {
+  engineDraws(on)
+  const skipped = await mountResult($, 'terminal', 'Bash', {
+    ...BASH_EDITS,
+    bashEditDiff: { files: [], moreFiles: 0, skipped: true },
+  })
+  expect(await shownTexts(skipped)).toEqual(['ENGINE+DIFF'])
+  await skipped.unmount()
+
+  await $.command.run(TOGGLE)
+  const full = await mountResult($, 'terminal', 'Bash', BASH_EDITS)
+  expect(await shownTexts(full)).toEqual(['ENGINE+DIFF'])
+  await full.unmount()
+  await $.command.run(TOGGLE)
 })

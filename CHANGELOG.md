@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.0] - 2026-10-10
+
+- Bash commands that change files keep their output and show one line per changed file (`Edited`, `Created` or `Deleted`, with `+added −removed`) instead of the diff, plus `and N more files` when Claude Code lists more.
+- `/quiet-diffs` toggles shell edit diffs along with `Edit`, `Write` and `NotebookEdit`.
+- README now recommends `bashEditDiffEnabled: true` so shell edits are recorded in every permission mode.
+
 ## [1.1.0] - 2026-10-07
 
 - Summary lines are now in English: `Edited`, `Created` and `Overwrote`, with `line` or `lines` for new files.
@@ -20,5 +26,6 @@ Initial release of quiet-diffs by AnnihilationWizard.
 
 Built on Claude Code's early-access function-hooks mod API and tested against Claude Code 2.1.292.
 
+[1.2.0]: https://github.com/AnnihilationWizard/quiet-diffs/releases/tag/v1.2.0
 [1.1.0]: https://github.com/AnnihilationWizard/quiet-diffs/releases/tag/v1.1.0
 [1.0.0]: https://github.com/AnnihilationWizard/quiet-diffs/releases/tag/v1.0.0

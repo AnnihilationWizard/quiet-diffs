@@ -6,11 +6,11 @@
 </p>
 
 <p align="center">
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Version-1.1.0-green.svg" alt="Version 1.1.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Version-1.2.0-green.svg" alt="Version 1.2.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
   <a href="https://code.claude.com/docs"><img src="https://img.shields.io/badge/Claude%20Code-2.1.292%2B-D97757.svg" alt="Claude Code 2.1.292+"></a>
   <a href="hooks/register.tsx"><img src="https://img.shields.io/badge/Type-Function%20hooks%20mod-6E7681.svg" alt="Function hooks mod"></a>
-  <a href="hooks/register.test.tsx"><img src="https://img.shields.io/badge/Tests-4%20passing-3FB950.svg" alt="4 tests passing"></a>
+  <a href="hooks/register.test.tsx"><img src="https://img.shields.io/badge/Tests-6%20passing-3FB950.svg" alt="6 tests passing"></a>
 </p>
 
 <p align="center">
@@ -26,14 +26,15 @@
 
 *Illustration of the transcript before and after.*
 
-When Claude Code edits files, each `Edit` or `Write` step prints the whole diff into the transcript. Over a long task, those diffs push the steps and Claude's explanations off the screen. quiet-diffs keeps every step visible and turns each diff into a single line with the file path and its added and removed line counts. The change only affects what the transcript draws: the stored tool result, and what Claude reads, stay the same.
+When Claude Code edits files, each `Edit` or `Write` step, and each shell command that changes files, prints the whole diff into the transcript. Over a long task, those diffs push the steps and Claude's explanations off the screen. quiet-diffs keeps every step visible and turns each diff into a single line with the file path and its added and removed line counts. The change only affects what the transcript draws: the stored tool result, and what Claude reads, stay the same.
 
 > [!NOTE]
-> quiet-diffs is built on Claude Code's function-hooks mod API, which is in early access and may change between releases. It was built and tested against Claude Code **2.1.292**.
+> quiet-diffs is built on Claude Code's function-hooks mod API, which is in early access and may change between releases. It was built and tested against Claude Code **2.1.292** and **2.1.296**.
 
 ## Features
 
 - **One line per edit:** `Edit`, `Write` and `NotebookEdit` results show the path and `+added −removed` instead of the diff.
+- **Shell edits too:** When a Bash command changes files, its output stays and each changed file gets one line instead of a diff.
 - **Steps stay visible:** Works with the default transcript view, so tool calls and replies are not hidden as they are in focus view.
 - **Toggle on demand:** `/quiet-diffs` brings the full diff back for the session; run it again to return to summaries.
 - **Safe fallbacks:** Failed edits, edits held for review and every other tool keep Claude Code's own rendering.
@@ -45,6 +46,7 @@ When Claude Code edits files, each `Edit` or `Write` step prints the whole diff 
 | `Write`, new file | `Created docs/notes.md (40 lines)` |
 | `Write`, overwrite | `Overwrote config.json (+5 −2)` |
 | `NotebookEdit` | `Edited analysis.ipynb (cell abc123, replace)` |
+| `Bash` that changes files | Command output, then `Edited notes.txt (+2 −1)`, `Created new.txt (+1 −0)` or `Deleted old.txt (+0 −2)` per file |
 
 ## Install
 
@@ -93,19 +95,20 @@ Two Claude Code settings complete the quiet view. Add them to `~/.claude/setting
 ```json
 {
   "viewMode": "default",
-  "bashEditDiffEnabled": false
+  "bashEditDiffEnabled": true
 }
 ```
 
 | Setting | Why |
 | --- | --- |
 | `viewMode: "default"` | Shows each step. Focus view hides steps and only shows the final reply. |
-| `bashEditDiffEnabled: false` | Stops the diff Claude Code prints after a shell command changes files, which this mod does not handle. |
+| `bashEditDiffEnabled: true` | Records which files a shell command changed in every permission mode, so quiet-diffs can list them. Without it, Claude Code records them only in auto and `bypassPermissions` modes. Set it to `false` to hide shell edits entirely. |
 
 ### Limitations
 
 - A mod cannot tell whether a result is drawn in the `Ctrl+O` transcript, so summaries apply there too. Use `/quiet-diffs` when you need the full diff.
 - Claude Code folds some edits into a single group line, such as edits in its scratchpad. Those lines are Claude Code's own and are left as they are.
+- Shell edit summaries read a Bash result field that Claude Code marks as internal. If a later release changes it, quiet-diffs falls back to Claude Code's full diff.
 - The `/plugin install` command is available in terminal sessions only. A user-scope install also loads in the desktop app's Code tab.
 
 ## Development
