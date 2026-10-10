@@ -24,7 +24,7 @@ Initial release of quiet-diffs by AnnihilationWizard.
 - Tests for summaries, fallbacks and the toggle, run with `claude plugin test`.
 - English README with a before-and-after illustration, install and usage instructions, contribution guidance and security notes.
 
-Built on Claude Code's early-access function-hooks mod API and tested against Claude Code 2.1.292.
+Built on Claude Code's early-access function-hooks mod API.
 
 [1.2.0]: https://github.com/AnnihilationWizard/quiet-diffs/releases/tag/v1.2.0
 [1.1.0]: https://github.com/AnnihilationWizard/quiet-diffs/releases/tag/v1.1.0

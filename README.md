@@ -8,7 +8,7 @@
 <p align="center">
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Version-1.2.0-green.svg" alt="Version 1.2.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
-  <a href="https://code.claude.com/docs"><img src="https://img.shields.io/badge/Claude%20Code-2.1.292%2B-D97757.svg" alt="Claude Code 2.1.292+"></a>
+  <a href="https://code.claude.com/docs"><img src="https://img.shields.io/badge/Platform-Claude%20Code-D97757.svg" alt="Platform: Claude Code"></a>
   <a href="hooks/register.tsx"><img src="https://img.shields.io/badge/Type-Function%20hooks%20mod-6E7681.svg" alt="Function hooks mod"></a>
   <a href="hooks/register.test.tsx"><img src="https://img.shields.io/badge/Tests-6%20passing-3FB950.svg" alt="6 tests passing"></a>
 </p>
